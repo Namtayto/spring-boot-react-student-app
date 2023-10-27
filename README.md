@@ -5,8 +5,8 @@ Student project developed using Spring Boot and React.js.<br>
 #### An actual version of frontend build deployed to Vercel and backend deployed to Render:
 https://studywithnam.vercel.app <br>
 Login: 1@gmail.com <br>
-Password: 1
-Note: If any request is not sent for a few minutes the server will automatically suspend. It will start again after 5 minutes since the first request.
+Password: 1 <br>
+**Note: If any request is not sent for a few minutes the server will automatically suspend. It will start again after 5 minutes since the first request.**
 
 ## Used Technologies:
 
@@ -25,4 +25,4 @@ Note: If any request is not sent for a few minutes the server will automatically
 * Students can sign in and view academic transcript.
 * Students can view and pay tuition via Razorpay payment gateway.
 * Admin can register student account.
-* Admin can CRUD notice, academic transcript and tuition for student.
+* Admin can CRUD notice, academic transcript and tuition for students.
