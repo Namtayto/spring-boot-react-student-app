@@ -10,7 +10,7 @@ Password: 1 <br>
 
 ## Used Technologies:
 
-* Back-end: Java 17, Spring (Boot, Data, Security), JPA / Hibernate, PostgreSQL, Razorpay
+* Back-end: Spring (Boot, Data, Security), JPA / Hibernate, PostgreSQL, Razorpay
 * Front-end: React.js, Redux, React Router DOM, Tailwind CSS
 * Security: JWT, BasicAuth
 * REST API
