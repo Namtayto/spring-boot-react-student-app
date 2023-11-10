@@ -3,7 +3,7 @@ import { Popover, Transition } from "@headlessui/react";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 import { Avatar, Button, Menu, MenuItem } from "@mui/material";
-import { deepPurple } from "@mui/material/colors";
+import { deepOrange, deepPurple } from "@mui/material/colors";
 import { navigation } from "./navigationData";
 import { useNavigate } from "react-router-dom";
 import AuthModal from "../../Auth/AuthModal";
@@ -74,7 +74,6 @@ export default function Navigation() {
                   alt=""
                   width="36px"
                 ></img>
-                {/* <HouseIcon className="bg-white" style={{ color: "red" }} /> */}
               </button>
             </div>
 
@@ -147,7 +146,7 @@ export default function Navigation() {
 
             <div className="ml-auto flex items-center">
               <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                {auth.user?.firstName ? (
+                {auth.user?.role === "student" ? (
                   <div>
                     <Avatar
                       className="text-white"
@@ -178,6 +177,43 @@ export default function Navigation() {
                         Tuition
                       </MenuItem>
 
+                      <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                    </Menu>
+                  </div>
+                ) : auth.user?.role === "teacher" ? (
+                  <div className="flex items-center">
+                    <img
+                      className="mr-5"
+                      imgLogo
+                      src="https://static-00.iconduck.com/assets.00/teacher-and-book-icon-2048x1974-gbj3kbyw.png"
+                      alt=""
+                      width="36px"
+                    ></img>
+                    <Avatar
+                      className="text-white"
+                      onClick={handleUserClick}
+                      aria-controls={open ? "basic-menu" : undefined}
+                      aria-haspopup="true"
+                      aria-expanded={open ? "true" : undefined}
+                      sx={{
+                        bgcolor: deepOrange[500],
+                        color: "white",
+                        cursor: "pointer",
+                      }}
+                    >
+                      {auth.user?.firstName[0].toUpperCase()}
+                    </Avatar>
+                    <Menu
+                      id="basic-menu"
+                      anchorEl={anchorE1}
+                      open={openUserMenu}
+                      onClose={handleCloseUserMenu}
+                      MenuListProps={{ "aria-labelledby": "basic-button" }}
+                    >
+                      <div className="text-center text-red-600">Teacher</div>
+                      <MenuItem onClick={() => navigate("/account/teacher")}>
+                        Profile
+                      </MenuItem>
                       <MenuItem onClick={handleLogout}>Logout</MenuItem>
                     </Menu>
                   </div>
