@@ -3,6 +3,7 @@ package com.nam.controller;
 import com.nam.config.JwtProvider;
 import com.nam.exception.UserException;
 import com.nam.model.Student;
+import com.nam.model.Teacher;
 import com.nam.model.User;
 import com.nam.repository.UserRepository;
 import com.nam.request.LoginRequest;
@@ -77,6 +78,36 @@ public class AuthController {
         authResponse.setMessage("Signup Success for Student with Id: " + student.getStudentId());
         return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
 
+
+    }
+
+    @PostMapping("/signup/teacher")
+    public ResponseEntity<AuthResponse> createTeacher(@RequestBody Student student) throws UserException {
+
+        User isEmailExist = userRepository.findByEmail(student.getEmail());
+
+        if (isEmailExist != null) {
+            throw new UserException("Email Is Already Used");
+        }
+
+        Teacher created = new Teacher();
+        created.setEmail(student.getEmail());
+        created.setPassword(passwordEncoder.encode(student.getPassword()));
+        created.setFirstName(student.getFirstName());
+        created.setLastName(student.getLastName());
+        created.setRole("teacher");
+
+        User savedUser = userRepository.save(created);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(savedUser.getEmail(), savedUser.getPassword());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String token = jwtProvider.generateToken(authentication);
+
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setJwt(token);
+        authResponse.setMessage("Signup Success for Student with Id: " + student.getStudentId());
+        return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
 
     }
 
