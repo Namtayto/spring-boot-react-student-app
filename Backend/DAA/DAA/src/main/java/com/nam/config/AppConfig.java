@@ -65,7 +65,7 @@ public class AppConfig {
         http
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.disable())
                 .csrf(AbstractHttpConfigurer::disable)
-                .securityMatcher("/auth/signup/student", "/studentpoint/**", "/notice/create", "/tuition/**")
+                .securityMatcher("/auth/signup/student", "/notice/create", "/tuition/**")
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().hasRole("ADMIN")
                 )
@@ -81,7 +81,7 @@ public class AppConfig {
         http
 
                 .csrf(AbstractHttpConfigurer::disable)
-                .securityMatcher("/auth/signin", "notice/**")
+                .securityMatcher("/auth/signin", "notice/**", "teacher/**", "student/**")
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().permitAll()
                 )
