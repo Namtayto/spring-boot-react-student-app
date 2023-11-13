@@ -50,4 +50,12 @@ public class StudentController {
 
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
+
+    @GetMapping("/getPoint/{studentId}")
+    public ResponseEntity<List<StudentPoint>> getPoint(@PathVariable Long studentId) throws UserException {
+        Student student = (Student) userService.findUserById(studentId);
+
+        return new ResponseEntity<>(student.getStudentPoints(), HttpStatus.OK);
+
+    }
 }
