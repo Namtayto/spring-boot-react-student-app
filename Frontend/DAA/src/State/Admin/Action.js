@@ -10,6 +10,7 @@ import {
   MAKE_REQUEST,
   UPDATE_USER,
 } from "./ActionType";
+import { API_BASE_URL } from "../../config/apiconfig";
 
 export const makeRequest = () => {
   return {
@@ -55,7 +56,7 @@ export const FetchUserList = () => {
     dispatch(makeRequest());
     setTimeout(() => {
       axios
-        .get("http://localhost:5454/student/getStudentList")
+        .get(`${API_BASE_URL}/student/getStudentList`)
         .then((res) => {
           const userlist = res.data;
           console.log(userlist);
@@ -73,7 +74,7 @@ export const Removeuser = (code) => {
     dispatch(makeRequest());
     //setTimeout(() => {
     axios
-      .delete("http://localhost:5454/student/delete/" + code)
+      .delete(`${API_BASE_URL}/student/delete/` + code)
       .then((res) => {
         dispatch(deleteUser());
       })
@@ -89,7 +90,7 @@ export const FunctionAddUser = (data) => {
     dispatch(makeRequest());
     //setTimeout(() => {
     axios
-      .post("http://localhost:5454/auth/signup/student", data)
+      .post(`${API_BASE_URL}/auth/signup/student`, data)
       .then((res) => {
         dispatch(addUser());
         dispatch(FetchUserList());
@@ -106,10 +107,7 @@ export const FunctionAddPoint = (data, id, semester) => {
     dispatch(makeRequest());
     //setTimeout(() => {
     axios
-      .post(
-        "http://localhost:5454/student/subject/" + id + "/" + semester,
-        data
-      )
+      .post(`${API_BASE_URL}/student/subject/` + id + "/" + semester, data)
       .then((res) => {
         // dispatch(addUser());
         dispatch(FetchUserList());
@@ -121,20 +119,3 @@ export const FunctionAddPoint = (data, id, semester) => {
     // }, 2000);
   };
 };
-
-// export const FunctionUpdateUser = (data, code) => {
-//   return (dispatch) => {
-//     dispatch(makeRequest());
-//     //setTimeout(() => {
-//     axios
-//       .put("http://localhost:8000/user/" + code, data)
-//       .then((res) => {
-//         dispatch(updateUser());
-//         toast.success("User Updated successfully.");
-//       })
-//       .catch((err) => {
-//         dispatch(failRequest(err.message));
-//       });
-//     // }, 2000);
-//   };
-// };
