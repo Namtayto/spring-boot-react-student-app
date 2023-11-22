@@ -43,6 +43,7 @@ export default function Navigation() {
   const handleLogout = () => {
     dispatch(logOut());
     handleCloseUserMenu();
+    navigate("/");
   };
 
   useEffect(() => {
@@ -155,12 +156,16 @@ export default function Navigation() {
                       aria-haspopup="true"
                       aria-expanded={open ? "true" : undefined}
                       sx={{
-                        bgcolor: deepPurple[500],
-                        color: "white",
                         cursor: "pointer",
                       }}
                     >
-                      {auth.user?.firstName[0].toUpperCase()}
+                      <img
+                        className="flex items-center justify-center"
+                        imgLogo
+                        src="https://cdn-icons-png.flaticon.com/512/5850/5850276.png"
+                        alt=""
+                        width="36px"
+                      ></img>
                     </Avatar>
                     <Menu
                       id="basic-menu"
@@ -169,26 +174,20 @@ export default function Navigation() {
                       onClose={handleCloseUserMenu}
                       MenuListProps={{ "aria-labelledby": "basic-button" }}
                     >
+                      <div className="text-center text-red-600">
+                        Student: {auth.user?.studentId}
+                      </div>
                       <MenuItem onClick={() => navigate("/account/point")}>
                         Profile
                       </MenuItem>
-
                       <MenuItem onClick={() => navigate("/account/tuition")}>
                         Tuition
                       </MenuItem>
-
                       <MenuItem onClick={handleLogout}>Logout</MenuItem>
                     </Menu>
                   </div>
                 ) : auth.user?.role === "teacher" ? (
                   <div className="flex items-center">
-                    <img
-                      className="mr-5"
-                      imgLogo
-                      src="https://static-00.iconduck.com/assets.00/teacher-and-book-icon-2048x1974-gbj3kbyw.png"
-                      alt=""
-                      width="36px"
-                    ></img>
                     <Avatar
                       className="text-white"
                       onClick={handleUserClick}
@@ -196,12 +195,16 @@ export default function Navigation() {
                       aria-haspopup="true"
                       aria-expanded={open ? "true" : undefined}
                       sx={{
-                        bgcolor: deepOrange[500],
-                        color: "white",
                         cursor: "pointer",
                       }}
                     >
-                      {auth.user?.firstName[0].toUpperCase()}
+                      <img
+                        className="flex items-center justify-center"
+                        imgLogo
+                        src="https://static-00.iconduck.com/assets.00/teacher-and-book-icon-2048x1974-gbj3kbyw.png"
+                        alt=""
+                        width="36px"
+                      ></img>
                     </Avatar>
                     <Menu
                       id="basic-menu"
@@ -211,7 +214,7 @@ export default function Navigation() {
                       MenuListProps={{ "aria-labelledby": "basic-button" }}
                     >
                       <div className="text-center text-red-600">Teacher</div>
-                      <MenuItem onClick={() => navigate("/account/teacher")}>
+                      <MenuItem onClick={() => navigate("/teacher")}>
                         Profile
                       </MenuItem>
                       <MenuItem onClick={handleLogout}>Logout</MenuItem>
