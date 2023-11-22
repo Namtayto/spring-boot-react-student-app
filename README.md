@@ -26,3 +26,7 @@ Password: 1 <br>
 * Students can view and pay tuition via Razorpay payment gateway.
 * Admin can register student account.
 * Admin can CRUD notice, academic transcript and tuition for students.
+
+  ## Data Model
+  ### Entity-Relationship-Diagram
+  ![Entity Diagram](https://github.com/Namtayto/spring-boot-react-student-app/blob/main/Backend/DAA/DAA/image/daa_SQL.png)
