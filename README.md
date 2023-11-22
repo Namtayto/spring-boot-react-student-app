@@ -8,7 +8,11 @@ Login: 1@gmail.com <br>
 Password: 1 <br>
 **Note: If any request is not sent for a few minutes the server will automatically suspend. It will start again after 5 minutes since the first request.**
 ## Overview:
-![Uploading overviewTeacher.gif…]()
+### Teacher:
+![Uploading overviewTeacher.gif…](https://github.com/Namtayto/spring-boot-react-student-app/blob/main/overviewTeacher.gif)
+
+### Student:
+
 
 ## Used Technologies:
 
