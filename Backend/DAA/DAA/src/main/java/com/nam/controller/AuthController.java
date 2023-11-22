@@ -82,19 +82,19 @@ public class AuthController {
     }
 
     @PostMapping("/signup/teacher")
-    public ResponseEntity<AuthResponse> createTeacher(@RequestBody Student student) throws UserException {
+    public ResponseEntity<AuthResponse> createTeacher(@RequestBody Teacher teacher) throws UserException {
 
-        User isEmailExist = userRepository.findByEmail(student.getEmail());
+        User isEmailExist = userRepository.findByEmail(teacher.getEmail());
 
         if (isEmailExist != null) {
             throw new UserException("Email Is Already Used");
         }
 
         Teacher created = new Teacher();
-        created.setEmail(student.getEmail());
-        created.setPassword(passwordEncoder.encode(student.getPassword()));
-        created.setFirstName(student.getFirstName());
-        created.setLastName(student.getLastName());
+        created.setEmail(teacher.getEmail());
+        created.setPassword(passwordEncoder.encode(teacher.getPassword()));
+        created.setFirstName(teacher.getFirstName());
+        created.setLastName(teacher.getLastName());
         created.setRole("teacher");
 
         User savedUser = userRepository.save(created);
@@ -106,7 +106,7 @@ public class AuthController {
 
         AuthResponse authResponse = new AuthResponse();
         authResponse.setJwt(token);
-        authResponse.setMessage("Signup Success for Student with Id: " + student.getStudentId());
+        authResponse.setMessage("Signup Success for Teacher.");
         return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
 
     }
