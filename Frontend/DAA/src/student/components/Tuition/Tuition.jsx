@@ -52,7 +52,7 @@ const Tuition = () => {
           </tr>
         </thead>
         <div className="relative px-5 border">
-          <StudentInfo userInfo={userInfo} />
+          <StudentInfo userInfo={auth.user} />
         </div>
 
         <div class="relative px-5">
