@@ -1,14 +1,51 @@
 import { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FetchUserList, Removeuser } from "../../../State/Admin/Action";
 import PointModal from "./PointModal";
+import { getUser } from "../../../State/Auth/Action";
+import { Pagination, TextField } from "@mui/material";
+import FileUpload from "./FileUpload";
 
 const StudentList = (props) => {
+  const jwt = localStorage.getItem("jwt");
+  const { auth } = useSelector((store) => store);
+  const dispatch = useDispatch();
+
+  const location = useLocation();
+  const decodedQueryString = decodeURIComponent(location.search);
+  const searchParams = new URLSearchParams(decodedQueryString);
+  const pageNumber = searchParams.get("page") || 1;
+  const navigate = useNavigate();
+
+  const handlePaginationChange = (event, value) => {
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set("page", value);
+    const query = searchParams.toString();
+    navigate({ search: `?${query}` });
+  };
+  const [inputText, setInputText] = useState("1");
+  let inputHandler = (e) => {
+    //convert input text to lower case
+    var lowerCase = e.target.value.toLowerCase();
+    setInputText(lowerCase);
+  };
   useEffect(() => {
-    props.loaduser();
-  }, []);
+    if (jwt) {
+      dispatch(getUser(jwt));
+    }
+  }, [jwt, auth.jwt, dispatch]);
+
+  useEffect(() => {
+    const data = {
+      pageNumber: pageNumber - 1,
+      pageSize: 3,
+    };
+    dispatch(FetchUserList(data));
+    // props.loaduser(data);
+  }, [pageNumber, dispatch]);
+
   const handledelete = (code) => {
     if (window.confirm("Do you want to remove?")) {
       props.removeuser(code);
@@ -24,6 +61,15 @@ const StudentList = (props) => {
       [studentPoints]: true,
     }));
   };
+  if (auth.user?.role !== "teacher") {
+    return (
+      <div className="flex justify-center items-center">
+        <h2 className="text-white text-lg">
+          You do not have permission to view this page. Please sign in first.
+        </h2>
+      </div>
+    );
+  }
   const handleClose = (studentPoints) => {
     // Set the state for the specific item
     setOpenModals((prevOpenModals) => ({
@@ -31,6 +77,9 @@ const StudentList = (props) => {
       [studentPoints]: false,
     }));
   };
+  const filteredUserList = props.user.userlist?.content.filter((item) =>
+    item.studentId.includes(inputText)
+  );
   return props.user.loading ? (
     <div>
       <h2>Loading...</h2>
@@ -41,7 +90,22 @@ const StudentList = (props) => {
     </div>
   ) : (
     <div className="mt-10">
+      <div className="search">
+        <TextField
+          className="bg-white"
+          id="outlined-basic"
+          onChange={inputHandler}
+          variant="outlined"
+          fullWidth
+          label="Search by student ID"
+          InputLabelProps={{ style: { fontWeight: "bold" } }}
+          InputProps={{ style: { fontWeight: "bold" } }}
+        />
+      </div>
       <div className="card">
+        <div className="flex">
+          <FileUpload />
+        </div>
         <div className="card-header">
           <Link
             to={"/add"}
@@ -93,7 +157,7 @@ const StudentList = (props) => {
                 </th>
               </tr>
               {props.user.userlist &&
-                props.user.userlist.map((item) => (
+                filteredUserList.map((item) => (
                   <tr key={item.id} className="bg-black text-white">
                     <td className="border-r px-6 py-4 border-white text-center ">
                       {item.id}
@@ -143,6 +207,14 @@ const StudentList = (props) => {
           </table>
         </div>
       </div>
+      <div className="flex justify-center mt-10 bg-green-900">
+        <Pagination
+          count={props.user.userlist?.totalPages}
+          color="secondary"
+          onChange={handlePaginationChange}
+          style={{ color: "red" }}
+        />
+      </div>
     </div>
   );
 };
@@ -154,7 +226,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    loaduser: () => dispatch(FetchUserList()),
+    loaduser: (data) => dispatch(FetchUserList(data)),
     removeuser: (code) => dispatch(Removeuser(code)),
   };
 };

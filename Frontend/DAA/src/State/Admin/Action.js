@@ -51,12 +51,15 @@ export const updateUser = () => {
   };
 };
 
-export const FetchUserList = () => {
+export const FetchUserList = (reqdata) => {
+  const { pageNumber, pageSize } = reqdata;
   return (dispatch) => {
     dispatch(makeRequest());
     setTimeout(() => {
       axios
-        .get(`${API_BASE_URL}/student/getStudentList`)
+        .get(
+          `${API_BASE_URL}/student/getStudentList?pageNumber=${pageNumber}&pageSize=${pageSize}`
+        )
         .then((res) => {
           const userlist = res.data;
           console.log(userlist);
@@ -65,7 +68,7 @@ export const FetchUserList = () => {
         .catch((err) => {
           dispatch(failRequest(err.message));
         });
-    }, 50);
+    }, 200);
   };
 };
 
