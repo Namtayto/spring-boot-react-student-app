@@ -1,29 +1,34 @@
 package com.nam.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nam.exception.UserException;
 import com.nam.model.Student;
 import com.nam.model.StudentPoint;
-import com.nam.repository.StudentRepository;
 import com.nam.response.ApiResponse;
 import com.nam.service.StudentPointService;
+import com.nam.service.StudentService;
 import com.nam.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/student")
 public class StudentController {
-    private final StudentRepository studentRepository;
+    private final StudentService studentService;
     private final StudentPointService studentPointService;
     private final UserService userService;
 
     @Autowired
-    public StudentController(StudentRepository studentRepository, StudentPointService studentPointService, UserService userService) {
-        this.studentRepository = studentRepository;
+    public StudentController(StudentService studentService, StudentPointService studentPointService, UserService userService) {
+        this.studentService = studentService;
         this.studentPointService = studentPointService;
         this.userService = userService;
     }
@@ -35,9 +40,9 @@ public class StudentController {
     }
 
     @GetMapping("/getStudentList")
-    public ResponseEntity<List<Student>> getAllNotice() {
+    public ResponseEntity<Page<Student>> getAllNotice(@RequestParam Integer pageNumber, @RequestParam Integer pageSize) {
 
-        List<Student> students = studentRepository.findAll();
+        Page<Student> students = studentService.getStudentListPage(pageNumber, pageSize);
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
 
@@ -51,11 +56,23 @@ public class StudentController {
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
-    @GetMapping("/getPoint/{studentId}")
-    public ResponseEntity<List<StudentPoint>> getPoint(@PathVariable Long studentId) throws UserException {
-        Student student = (Student) userService.findUserById(studentId);
+    @PostMapping("/upload")
+    public String handleFileUpload(@RequestParam("file") MultipartFile file) {
+        try {
+            List<Student> entities = readJsonAndMapToEntities(file);
 
-        return new ResponseEntity<>(student.getStudentPoints(), HttpStatus.OK);
+            studentService.saveallStudent(entities);
 
+            return "File uploaded successfully";
+        } catch (Exception e) {
+            return "Error uploading file: " + e.getMessage();
+        }
+    }
+
+    private List<Student> readJsonAndMapToEntities(MultipartFile file) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        TypeReference<List<Student>> typeReference = new TypeReference<>() {
+        };
+        return objectMapper.readValue(file.getInputStream(), typeReference);
     }
 }
