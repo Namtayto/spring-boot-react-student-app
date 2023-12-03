@@ -4,8 +4,8 @@ Student project developed using Spring Boot and React.js.<br>
 
 #### An actual version of frontend build deployed to Vercel and backend deployed to Render:
 https://studywithnam.vercel.app <br>
-Login: 1@gmail.com <br>
-Password: 1 <br>
+Login: teacher@gmail.com <br>
+Password: teacher <br>
 **Note: If any request is not sent for a few minutes the server will automatically suspend. It will start again after 5 minutes since the first request.**
 ## Overview:
 ### Teacher:
@@ -20,7 +20,7 @@ Password: 1 <br>
 * Front-end: React.js, Redux, React Router DOM, Tailwind CSS
 * Security: JWT, BasicAuth
 * REST API
-* Deploy: Vercel, Render
+* Deploy: Vercel, Render, Docker
 
 ## Features
 
@@ -32,6 +32,7 @@ Password: 1 <br>
 * Students can view and pay tuition via Razorpay payment gateway.
 * Admin can register student account.
 * Admin can CRUD notice, academic transcript and tuition for students.
+* Pagination, Search Bar, Upload using JSON file, Send Email.
 
   ## Data Model
   ### Entity-Relationship-Diagram
