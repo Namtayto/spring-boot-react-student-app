@@ -36,11 +36,14 @@ const StudentList = (props) => {
       dispatch(getUser(jwt));
     }
   }, [jwt, auth.jwt, dispatch]);
-
+  const [currentPage, setCurrentPage] = useState(pageNumber);
+  useEffect(() => {
+    setCurrentPage(pageNumber);
+  }, [pageNumber]);
   useEffect(() => {
     const data = {
       pageNumber: pageNumber - 1,
-      pageSize: 3,
+      pageSize: 10,
     };
     dispatch(FetchUserList(data));
     // props.loaduser(data);
@@ -77,9 +80,11 @@ const StudentList = (props) => {
       [studentPoints]: false,
     }));
   };
-  const filteredUserList = props.user.userlist?.content.filter((item) =>
-    item.studentId.includes(inputText)
-  );
+  const filteredUserList = props.user.userlist?.content
+    ? props.user.userlist.content.filter((item) =>
+        item.studentId.includes(inputText)
+      )
+    : [];
   return props.user.loading ? (
     <div>
       <h2>Loading...</h2>
@@ -208,10 +213,12 @@ const StudentList = (props) => {
         </div>
       </div>
       <div className="flex justify-center mt-10 bg-green-900">
+        <p className="text-red-600">Page {currentPage}</p>
         <Pagination
           count={props.user.userlist?.totalPages}
           color="secondary"
           onChange={handlePaginationChange}
+          page={currentPage}
           style={{ color: "red" }}
         />
       </div>
