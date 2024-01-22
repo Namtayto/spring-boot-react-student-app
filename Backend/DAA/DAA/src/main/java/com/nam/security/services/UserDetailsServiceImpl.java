@@ -1,4 +1,4 @@
-package com.nam.service;
+package com.nam.security.services;
 
 import com.nam.model.User;
 import com.nam.repository.UserRepository;

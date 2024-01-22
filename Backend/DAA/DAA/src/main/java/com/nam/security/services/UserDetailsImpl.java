@@ -1,4 +1,4 @@
-package com.nam.service;
+package com.nam.security.services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nam.model.User;

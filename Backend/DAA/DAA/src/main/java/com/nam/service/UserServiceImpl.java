@@ -1,9 +1,9 @@
 package com.nam.service;
 
-import com.nam.config.JwtProvider;
 import com.nam.exception.UserException;
 import com.nam.model.User;
 import com.nam.repository.UserRepository;
+import com.nam.security.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
