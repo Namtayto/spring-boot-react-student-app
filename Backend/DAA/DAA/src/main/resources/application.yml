@@ -1,0 +1,49 @@
+razorpay:
+  api:
+    key: '{KEY}'
+    secret: '{SECRET}'
+logging:
+  level:
+    org:
+      springframework:
+        security:
+          web: DEBUG
+spring:
+  profiles:
+    active: dev
+server:
+  port: 8080
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    url: jdbc:mysql://localhost:3306/daa
+    password: pass
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: 'true'
+
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: user
+    url: jdbc:postgresql://URL-a.singapore-postgres.render.com/student_vzmt
+    password: pass
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: 'true'
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
