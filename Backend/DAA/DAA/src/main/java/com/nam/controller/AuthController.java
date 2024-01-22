@@ -48,11 +48,8 @@ public class AuthController {
     @PostMapping("/signup/student")
     public ResponseEntity<AuthResponse> createStudent(@RequestBody Student student) throws UserException {
 
-        User isEmailExist = userRepository.findByEmail(student.getEmail());
-
-        if (isEmailExist != null) {
-            throw new UserException("Email Is Already Used");
-        }
+        User isEmailExist = userRepository.findByEmail(student.getEmail())
+                .orElseThrow(() -> new UserException("User Not Found with email: " + student.getEmail()));
 
         Student created = new Student();
         created.setEmail(student.getEmail());
@@ -84,12 +81,9 @@ public class AuthController {
     @PostMapping("/signup/teacher")
     public ResponseEntity<AuthResponse> createTeacher(@RequestBody Teacher teacher) throws UserException {
 
-        User isEmailExist = userRepository.findByEmail(teacher.getEmail());
-
-        if (isEmailExist != null) {
-            throw new UserException("Email Is Already Used");
-        }
-
+        User isEmailExist = userRepository.findByEmail(teacher.getEmail())
+                .orElseThrow(() -> new UserException("User Not Found with email: " + teacher.getEmail()));
+        
         Teacher created = new Teacher();
         created.setEmail(teacher.getEmail());
         created.setPassword(passwordEncoder.encode(teacher.getPassword()));
