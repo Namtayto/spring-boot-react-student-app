@@ -2,9 +2,9 @@ package com.nam.controller;
 
 import com.nam.exception.TuitionException;
 import com.nam.model.Tuition;
+import com.nam.payload.response.ApiResponse;
+import com.nam.payload.response.PaymentLinkResponse;
 import com.nam.repository.TuitionRepository;
-import com.nam.response.ApiResponse;
-import com.nam.response.PaymentLinkResponse;
 import com.nam.service.UserService;
 import com.razorpay.Payment;
 import com.razorpay.PaymentLink;

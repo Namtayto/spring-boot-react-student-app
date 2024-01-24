@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nam.exception.UserException;
 import com.nam.model.Student;
 import com.nam.model.StudentPoint;
-import com.nam.response.ApiResponse;
+import com.nam.payload.response.ApiResponse;
 import com.nam.service.StudentPointService;
 import com.nam.service.StudentService;
 import com.nam.service.UserService;

@@ -1,4 +1,4 @@
-package com.nam.request;
+package com.nam.payload.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
