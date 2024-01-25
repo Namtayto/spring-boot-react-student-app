@@ -1,7 +1,7 @@
 package com.nam.config;
 
-import com.nam.security.AuthEntryPointJwt;
-import com.nam.security.JwtValidator;
+import com.nam.security.jwt.AuthEntryPointJwt;
+import com.nam.security.jwt.JwtValidator;
 import com.nam.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

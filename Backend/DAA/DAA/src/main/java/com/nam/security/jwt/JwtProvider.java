@@ -1,4 +1,4 @@
-package com.nam.security;
+package com.nam.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
