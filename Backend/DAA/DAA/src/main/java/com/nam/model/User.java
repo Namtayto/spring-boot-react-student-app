@@ -19,7 +19,9 @@ import java.util.Set;
 @Getter
 @Setter
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "email")
+})
 public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
