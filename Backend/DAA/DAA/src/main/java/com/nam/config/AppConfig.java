@@ -3,7 +3,6 @@ package com.nam.config;
 import com.nam.security.jwt.AuthEntryPointJwt;
 import com.nam.security.jwt.JwtValidator;
 import com.nam.security.services.UserDetailsServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -31,11 +30,14 @@ import java.util.Collections;
 @EnableWebSecurity
 public class AppConfig {
 
-    @Autowired
-    UserDetailsServiceImpl userDetailsServiceImpl;
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
 
-    @Autowired
-    private AuthEntryPointJwt unauthorizedHandler;
+    private final AuthEntryPointJwt unauthorizedHandler;
+
+    public AppConfig(UserDetailsServiceImpl userDetailsServiceImpl, AuthEntryPointJwt unauthorizedHandler) {
+        this.userDetailsServiceImpl = userDetailsServiceImpl;
+        this.unauthorizedHandler = unauthorizedHandler;
+    }
 
     @Bean
     public JwtValidator authenticationJwtTokenFilter() {
@@ -76,7 +78,7 @@ public class AppConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-//                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").permitAll()
@@ -91,43 +93,10 @@ public class AppConfig {
         return http.build();
     }
 
-    //    @Bean
-    //    @Order(2)
-    //    public SecurityFilterChain basicAuh(HttpSecurity http) throws Exception {
-    //        http
-    //                .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.disable())
-    //                .csrf(AbstractHttpConfigurer::disable)
-    //                .securityMatcher("/auth/signup/student", "/notice/create", "/tuition/**")
-    //                .authorizeHttpRequests(auth -> auth
-    //                        .anyRequest().hasRole("ADMIN")
-    //                )
-    //                .authenticationProvider(authenticationProvider(us()))
-    //                .httpBasic(Customizer.withDefaults());
-    //
-    //
-    //        return http.build();
-    //    }
-
-//    @Bean
-//    @Order(2)
-//    public SecurityFilterChain other(HttpSecurity http) throws Exception {
-//        http
-//
-//                .csrf(AbstractHttpConfigurer::disable)
-//                .securityMatcher("/auth/signin", "notice/**", "teacher/**", "student/**", "/auth/signup/*")
-//                .authorizeHttpRequests(auth -> auth
-//                        .anyRequest().permitAll()
-//                );
-//
-//
-//        return http.build();
-//    }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
 }
 
