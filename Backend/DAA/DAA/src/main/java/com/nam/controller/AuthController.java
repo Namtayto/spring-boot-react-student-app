@@ -1,19 +1,15 @@
 package com.nam.controller;
 
-import com.nam.exception.TokenRefreshException;
+import com.nam.exception.UserException;
 import com.nam.model.*;
 import com.nam.payload.request.LoginRequest;
-import com.nam.payload.request.TokenRefreshRequest;
 import com.nam.payload.response.ApiResponse;
 import com.nam.payload.response.JwtResponse;
-import com.nam.payload.response.TokenRefreshResponse;
 import com.nam.repository.RoleRepository;
 import com.nam.repository.UserRepository;
-import com.nam.security.jwt.JwtProvider;
-import com.nam.security.services.RefreshTokenService;
+import com.nam.security.JwtProvider;
 import com.nam.security.services.UserDetailsImpl;
 import com.nam.security.services.UserDetailsServiceImpl;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,14 +40,11 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
 
-    private final RefreshTokenService refreshTokenService;
-
-
     @Autowired
     public AuthController(UserRepository userRepository,
                           UserDetailsServiceImpl customerUserService,
                           PasswordEncoder passwordEncoder,
-                          JwtProvider jwtProvider, RoleRepository roleRepository, AuthenticationManager authenticationManager, RefreshTokenService refreshTokenService) {
+                          JwtProvider jwtProvider, RoleRepository roleRepository, AuthenticationManager authenticationManager) {
 
         this.userRepository = userRepository;
         this.userDetailsService = customerUserService;
@@ -60,11 +53,10 @@ public class AuthController {
 
         this.roleRepository = roleRepository;
         this.authenticationManager = authenticationManager;
-        this.refreshTokenService = refreshTokenService;
     }
 
     @PostMapping("/signup/student")
-    public ResponseEntity<ApiResponse> createStudent(@RequestBody Student student) {
+    public ResponseEntity<ApiResponse> createStudent(@RequestBody Student student) throws UserException {
 
         Optional<User> isEmailExist = userRepository.findByEmail(student.getEmail());
         if (isEmailExist.isPresent()) {
@@ -97,7 +89,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup/teacher")
-    public ResponseEntity<ApiResponse> createTeacher(@RequestBody Teacher teacher) {
+    public ResponseEntity<ApiResponse> createTeacher(@RequestBody Teacher teacher) throws UserException {
 
         Optional<User> isEmailExist = userRepository.findByEmail(teacher.getEmail());
         if (isEmailExist.isPresent()) {
@@ -135,33 +127,46 @@ public class AuthController {
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
-
-        return ResponseEntity.ok(new JwtResponse(jwt, refreshToken.getToken(), userDetails.getId(),
-                userDetails.getUsername(), userDetails.getEmail(), roles));
+        return ResponseEntity.ok(new JwtResponse(jwt,
+                userDetails.getId(),
+                userDetails.getUsername(),
+                userDetails.getEmail(),
+                roles));
     }
-
-    @PostMapping("/refreshtoken")
-    public ResponseEntity<?> refreshtoken(@Valid @RequestBody TokenRefreshRequest request) {
-        String requestRefreshToken = request.getRefreshToken();
-
-        return refreshTokenService.findByToken(requestRefreshToken)
-                .map(refreshTokenService::verifyExpiration)
-                .map(RefreshToken::getUser)
-                .map(user -> {
-                    String token = jwtProvider.generateTokenByEmail(user.getEmail());
-                    return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
-                })
-                .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
-                        "Refresh token is not in database!"));
-    }
-
-    @PostMapping("/signout")
-    public ResponseEntity<?> logoutUser() {
-        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long userId = userDetails.getId();
-        refreshTokenService.deleteByUserId(userId);
-        return ResponseEntity.ok(new ApiResponse("Log out successful!", true));
-    }
-
+//    @PostMapping("/signin")
+//    public ResponseEntity<AuthResponse> loginUserHandler(@RequestBody LoginRequest loginRequest) {
+//        String userName = loginRequest.getEmail();
+//        String password = loginRequest.getPassword();
+//
+//        Authentication authentication = authenticate(userName, password);
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//
+//        String token = jwtProvider.generateToken(authentication);
+//
+//        AuthResponse authResponse = new AuthResponse();
+//        authResponse.setJwt(token);
+//        authResponse.setMessage("Signin Success");
+//
+//        return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
+//
+//
+//    }
+//
+//    private Authentication authenticate(String userName, String password) {
+//        UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
+//
+//        if (userDetails == null) {
+//            throw new BadCredentialsException("Invalid UserName");
+//        }
+//        if (!passwordEncoder.matches(password, userDetails.getPassword())) {
+//            throw new BadCredentialsException("Invalid Password");
+//        }
+//
+//        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+//
+//    }
 }
+
+
+
+
