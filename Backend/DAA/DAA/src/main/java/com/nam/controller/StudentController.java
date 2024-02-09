@@ -48,7 +48,7 @@ public class StudentController {
 
     @DeleteMapping("/delete/{studentId}")
     public ResponseEntity<ApiResponse> deleteUser(@PathVariable Long studentId) throws UserException {
-        userService.removeUser(studentId);
+        userService.deleteUser(studentId);
 
         ApiResponse res = ApiResponse.builder().
                 message("Deleted student with id: " + studentId).status(true).build();

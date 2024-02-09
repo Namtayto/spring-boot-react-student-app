@@ -8,5 +8,5 @@ public interface UserService {
 
     public User findUserProfileByJwt(String jwt) throws UserException;
 
-    public void removeUser(Long id) throws UserException;
+    public void deleteUser(Long id) throws UserException;
 }
