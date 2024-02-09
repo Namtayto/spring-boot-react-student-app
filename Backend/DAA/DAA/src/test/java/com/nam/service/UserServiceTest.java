@@ -25,6 +25,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -128,8 +130,19 @@ class UserServiceTest {
         String actualMessage = exception.getMessage();
         assertThat(actualMessage).isEqualTo(expectedMessage);
     }
-//
-//    @Test
-//    void removeUser() {
-//    }
+
+    @DisplayName("JUnit test for deleteUser method")
+    @Test
+    void givenUserId_whenDeleteUser_thenNothing() throws UserException {
+        // given - precondition or setup
+        Long userId = 1L;
+
+        willDoNothing().given(userRepository).deleteById(userId);
+
+        // when -  action or the behaviour that we are going test
+        userService.deleteUser(userId);
+
+        // then - verify the output
+        verify(userRepository, times(1)).deleteById(userId);
+    }
 }
