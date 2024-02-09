@@ -5,6 +5,7 @@ import com.nam.model.ERole;
 import com.nam.model.Role;
 import com.nam.model.User;
 import com.nam.repository.UserRepository;
+import com.nam.security.jwt.JwtProvider;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,6 +23,7 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -31,11 +33,15 @@ class UserServiceTest {
     @Mock
     UserRepository userRepository;
 
+    @Mock
+    JwtProvider jwtProvider;
+
     @InjectMocks
     UserServiceImpl userService;
 
     User user;
     Set<Role> roles = new HashSet<>();
+    String JWT = "eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE3MDIyNjAyNTEsImV4cCI6MTcwMzEwNjI1MSwiZW1haWwiOiIxMjNAZ21haWwuY29tIn0.sb46h-G_UiX257hF98DIiJRFcy2MMSFeHPskHR8RJgnwl3-PzJJUI_bDQ6PJHCqw";
 
     @BeforeEach
     void setUp() {
@@ -61,8 +67,6 @@ class UserServiceTest {
     void givenUserObject_whenFindUserById_thenReturnUserObject() throws UserException {
         // given - precondition or setup
         given(userRepository.findById(user.getId())).willReturn(Optional.of(user));
-        System.out.println(userRepository);
-        System.out.println(userService);
 
         // when -  action or the behaviour that we are going test
         User findUser = userService.findUserById(user.getId());
@@ -90,9 +94,40 @@ class UserServiceTest {
         assertThat(actualMessage).isEqualTo(expectedMessage);
     }
 
-//    @Test
-//    void findUserProfileByJwt() {
-//    }
+    @DisplayName("JUnit test for findUserProfileByJwt method")
+    @Test
+    void givenJWT_whenFindUserProfileByJwt_thenReturnUserObject() throws UserException {
+        // given - precondition or setup
+        given(jwtProvider.getEmailFromToken(JWT)).willReturn(user.getEmail());
+        given(userRepository.findByEmail(user.getEmail())).willReturn(Optional.of(user));
+
+        // when -  action or the behaviour that we are going test
+        User findUser = userService.findUserProfileByJwt(JWT);
+
+        // then - verify the output
+        assertThat(findUser).isEqualTo(user);
+        verify(jwtProvider).getEmailFromToken(JWT);
+        verify(userRepository).findByEmail(user.getEmail());
+    }
+
+    @DisplayName("JUnit test for findUserProfileByJwt method which throws exception")
+    @Test
+    void givenJWT_whenFindUserProfileByJwt_thenThrowException() throws UserException {
+        // given - precondition or setup
+        given(jwtProvider.getEmailFromToken(JWT)).willReturn(user.getEmail());
+        given(userRepository.findByEmail(anyString())).willReturn(Optional.empty());
+
+        // when -  action or the behaviour that we are going to test
+        UserException exception = assertThrows(UserException.class, () -> userService.findUserProfileByJwt(JWT));
+
+        // then - verify the output
+        verify(jwtProvider).getEmailFromToken(JWT);
+        verify(userRepository).findByEmail(user.getEmail());
+
+        String expectedMessage = "User Not Found with email: " + user.getEmail();
+        String actualMessage = exception.getMessage();
+        assertThat(actualMessage).isEqualTo(expectedMessage);
+    }
 //
 //    @Test
 //    void removeUser() {
