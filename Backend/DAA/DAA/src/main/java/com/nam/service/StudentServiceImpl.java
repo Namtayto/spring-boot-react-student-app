@@ -24,7 +24,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<Student> saveallStudent(List<Student> students) {
+    public List<Student> saveAllStudent(List<Student> students) {
         return studentRepository.saveAll(students);
     }
 }

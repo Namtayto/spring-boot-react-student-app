@@ -61,7 +61,7 @@ public class StudentController {
         try {
             List<Student> entities = readJsonAndMapToEntities(file);
 
-            studentService.saveallStudent(entities);
+            studentService.saveAllStudent(entities);
 
             return "File uploaded successfully";
         } catch (Exception e) {

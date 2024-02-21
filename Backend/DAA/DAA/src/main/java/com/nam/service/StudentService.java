@@ -8,5 +8,5 @@ import java.util.List;
 public interface StudentService {
     public Page<Student> getStudentListPage(Integer pageNumber, Integer pageSize);
 
-    public List<Student> saveallStudent(List<Student> students);
+    public List<Student> saveAllStudent(List<Student> students);
 }
