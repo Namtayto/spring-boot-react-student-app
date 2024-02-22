@@ -31,6 +31,13 @@ public class RefreshTokenService {
     }
 
     public RefreshToken createRefreshToken(Long userId) {
+
+        Optional<RefreshToken> existRefreshToken = refreshTokenRepository.findByUser(userRepository.findById(userId));
+
+        if (existRefreshToken.isPresent()) {
+            refreshTokenRepository.delete(existRefreshToken.get());
+        }
+        
         RefreshToken refreshToken = new RefreshToken();
 
         refreshToken.setUser(userRepository.findById(userId).get());
