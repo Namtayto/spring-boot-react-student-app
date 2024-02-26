@@ -27,9 +27,11 @@ public class StudentPointServiceImpl implements StudentPointService {
     @Override
     public StudentPoint createStudentPoint(StudentPoint studentPoint, String studentId, String semester) {
 
-        StudentPoint createStudentPoint = studentRepository.findByStudentId(studentId).getStudentPointsBySemester(semester);
+        // StudentPoint existStudentPoint = studentRepository.findByStudentId(studentId).getStudentPointsBySemester(semester);//
+        
+        StudentPoint existStudentPoint = studentPointRepository.getStudentPointBySemesterAndStudentId(studentId, semester);
 
-        if (createStudentPoint == null) {
+        if (existStudentPoint == null) {
             studentPoint.setSemester(semester);
             studentPoint.setStudent(studentRepository.findByStudentId(studentId));
 
@@ -51,16 +53,15 @@ public class StudentPointServiceImpl implements StudentPointService {
             }
             return studentPoint;
         } else {
-            StudentPoint updateStudentPoint = studentRepository.findByStudentId(studentId).getStudentPointsBySemester(semester);
             for (Subject subject : studentPoint.getSubjects()) {
 
-                subject.setStudentPoint(updateStudentPoint);
+                subject.setStudentPoint(existStudentPoint);
                 subject.setPointAverage((subject.getPoint1() + subject.getPoint2() + subject.getPoint3() + subject.getPoint4()) / 4);
 
-                updateStudentPoint.getSubjects().add(subject);
+                existStudentPoint.getSubjects().add(subject);
             }
-            studentPointRepository.save(updateStudentPoint);
-            return updateStudentPoint;
+            studentPointRepository.save(existStudentPoint);
+            return existStudentPoint;
         }
     }
 
