@@ -20,6 +20,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -73,7 +74,7 @@ class StudentServiceTest {
 
         // then - verify the output
         assertThat(result).isEqualTo(studentPage);
-        verify(studentRepository).findAllWithPagination(pageable);
+        verify(studentRepository, times(1)).findAllWithPagination(pageable);
     }
 
 }

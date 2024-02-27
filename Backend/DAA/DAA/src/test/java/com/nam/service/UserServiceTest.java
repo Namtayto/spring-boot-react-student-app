@@ -76,7 +76,7 @@ class UserServiceTest {
 
         // then - verify the output
         assertThat(findUser).isEqualTo(user);
-        verify(userRepository).findById(user.getId());
+        verify(userRepository, times(1)).findById(user.getId());
     }
 
     @DisplayName("JUnit test for findUserById method which throws exception")
@@ -90,7 +90,7 @@ class UserServiceTest {
         UserException exception = assertThrows(UserException.class, () -> userService.findUserById(userId));
 
         // then - verify the output
-        verify(userRepository).findById(userId);
+        verify(userRepository, times(1)).findById(userId);
         String expectedMessage = "User not found with id: " + userId;
         String actualMessage = exception.getMessage();
         assertThat(actualMessage).isEqualTo(expectedMessage);
@@ -108,8 +108,8 @@ class UserServiceTest {
 
         // then - verify the output
         assertThat(findUser).isEqualTo(user);
-        verify(jwtProvider).getEmailFromToken(JWT);
-        verify(userRepository).findByEmail(user.getEmail());
+        verify(jwtProvider, times(1)).getEmailFromToken(JWT);
+        verify(userRepository, times(1)).findByEmail(user.getEmail());
     }
 
     @DisplayName("JUnit test for findUserProfileByJwt method which throws exception")
@@ -123,8 +123,8 @@ class UserServiceTest {
         UserException exception = assertThrows(UserException.class, () -> userService.findUserProfileByJwt(JWT));
 
         // then - verify the output
-        verify(jwtProvider).getEmailFromToken(JWT);
-        verify(userRepository).findByEmail(user.getEmail());
+        verify(jwtProvider, times(1)).getEmailFromToken(JWT);
+        verify(userRepository, times(1)).findByEmail(user.getEmail());
 
         String expectedMessage = "User Not Found with email: " + user.getEmail();
         String actualMessage = exception.getMessage();

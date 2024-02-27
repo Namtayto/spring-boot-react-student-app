@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -59,7 +60,7 @@ class EmailServiceTest {
         emailService.sendEmail(registerEmail);
 
         // then - verify the output
-        verify(emailRepository).save(registerEmail);
-        verify(javaMailSender).send(expectedEmail);
+        verify(emailRepository, times(1)).save(registerEmail);
+        verify(javaMailSender, times(1)).send(expectedEmail);
     }
 }
