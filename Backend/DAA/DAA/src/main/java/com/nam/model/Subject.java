@@ -2,16 +2,14 @@ package com.nam.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,5 +29,5 @@ public class Subject {
     @JoinColumn(name = "id_studentpoint")
     @JsonIgnore
     private StudentPoint studentPoint;
-    
+
 }
