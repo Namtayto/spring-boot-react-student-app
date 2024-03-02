@@ -18,7 +18,8 @@ Password: teacher <br>
 
 * Back-end: Spring (Boot, Data, Security), JPA / Hibernate, PostgreSQL, Razorpay
 * Front-end: React.js, Redux, React Router DOM, Tailwind CSS
-* Security: JWT, BasicAuth
+* Security: JWT, Refresh Token
+* Testing: JUnit5, AssertJ, Mockito. (given/when/then format - BDD style)
 * REST API
 * Deploy: Vercel, Render, Docker
 
@@ -26,9 +27,9 @@ Password: teacher <br>
 
 * Regular Username/Password authentication.
 * Stores authentication details like JWT in local storage.
-* Use BasicAuth for admin request authentication.
+* Authentication and Authorization using JWT and Refresh Token
 * Everyone can view the notice.
-* Students can sign in and view academic transcript.
+* Students can sign in and view their academic transcripts.
 * Students can view and pay tuition via Razorpay payment gateway.
 * Admin can register student account.
 * Admin can CRUD notice, academic transcript and tuition for students.
