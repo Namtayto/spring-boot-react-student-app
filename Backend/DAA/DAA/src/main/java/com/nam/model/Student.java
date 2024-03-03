@@ -24,10 +24,10 @@ public class Student extends User {
     private List<StudentPoint> studentPoints = new ArrayList<>();
 
     private String studentId;
-    private String clas;
-    private String department;
-    private String educationLevel;
-    private String educationProgram;
+    private String studentClass;
+//    private String department;
+//    private String educationLevel;
+//    private String educationProgram;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     @Column(name = "tuitions")
