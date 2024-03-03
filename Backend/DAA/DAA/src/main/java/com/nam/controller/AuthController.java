@@ -1,18 +1,19 @@
 package com.nam.controller;
 
 import com.nam.exception.TokenRefreshException;
-import com.nam.model.*;
+import com.nam.exception.UserException;
+import com.nam.model.RefreshToken;
 import com.nam.payload.request.LoginRequest;
+import com.nam.payload.request.SignupStudentRequest;
+import com.nam.payload.request.SignupTeacherRequest;
 import com.nam.payload.request.TokenRefreshRequest;
 import com.nam.payload.response.ApiResponse;
 import com.nam.payload.response.JwtResponse;
 import com.nam.payload.response.TokenRefreshResponse;
-import com.nam.repository.RoleRepository;
-import com.nam.repository.UserRepository;
 import com.nam.security.jwt.JwtProvider;
 import com.nam.security.services.RefreshTokenService;
 import com.nam.security.services.UserDetailsImpl;
-import com.nam.security.services.UserDetailsServiceImpl;
+import com.nam.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,104 +22,42 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-    private final UserRepository userRepository;
-    private final UserDetailsServiceImpl userDetailsService;
     private final JwtProvider jwtProvider;
-    private final PasswordEncoder passwordEncoder;
-    private final RoleRepository roleRepository;
-
+    private final UserService userService;
     private final AuthenticationManager authenticationManager;
-
     private final RefreshTokenService refreshTokenService;
 
-
     @Autowired
-    public AuthController(UserRepository userRepository,
-                          UserDetailsServiceImpl customerUserService,
-                          PasswordEncoder passwordEncoder,
-                          JwtProvider jwtProvider, RoleRepository roleRepository, AuthenticationManager authenticationManager, RefreshTokenService refreshTokenService) {
+    public AuthController(JwtProvider jwtProvider, UserService userService,
+                          AuthenticationManager authenticationManager, RefreshTokenService refreshTokenService) {
 
-        this.userRepository = userRepository;
-        this.userDetailsService = customerUserService;
-        this.passwordEncoder = passwordEncoder;
         this.jwtProvider = jwtProvider;
-
-        this.roleRepository = roleRepository;
+        this.userService = userService;
         this.authenticationManager = authenticationManager;
         this.refreshTokenService = refreshTokenService;
     }
 
     @PostMapping("/signup/student")
-    public ResponseEntity<ApiResponse> createStudent(@RequestBody Student student) {
-
-        Optional<User> isEmailExist = userRepository.findByEmail(student.getEmail());
-        if (isEmailExist.isPresent()) {
-            return new ResponseEntity<>(new ApiResponse("User already exists with email: " + student.getEmail(), false), HttpStatus.BAD_REQUEST);
-        }
-
-
-        Student created = new Student();
-        created.setEmail(student.getEmail());
-        created.setPassword(passwordEncoder.encode(student.getPassword()));
-        created.setFirstName(student.getFirstName());
-        created.setLastName(student.getLastName());
-
-        Set<Role> roles = new HashSet<>();
-        Optional<Role> role = roleRepository.findByName(ERole.ROLE_STUDENT);
-        roles.add(role.get());
-        created.setRoles(roles);
-
-        created.setStudentId(student.getStudentId());
-        created.setClas(student.getClas());
-        created.setDepartment(student.getDepartment());
-        created.setEducationLevel(student.getEducationLevel());
-        created.setEducationProgram(student.getEducationProgram());
-
-        userRepository.save(created);
-
-        return new ResponseEntity<>(new ApiResponse("Signup Success for Student with Id: " + student.getStudentId(), true), HttpStatus.CREATED);
-
-
+    public ResponseEntity<ApiResponse> createStudent(@RequestBody SignupStudentRequest request) throws UserException {
+        userService.createStudent(request);
+        return new ResponseEntity<>(new ApiResponse("Signup Success for Student with Id: " + request.getStudentId(), true), HttpStatus.CREATED);
     }
 
     @PostMapping("/signup/teacher")
-    public ResponseEntity<ApiResponse> createTeacher(@RequestBody Teacher teacher) {
-
-        Optional<User> isEmailExist = userRepository.findByEmail(teacher.getEmail());
-        if (isEmailExist.isPresent()) {
-            return new ResponseEntity<>(new ApiResponse("User already exists with email: " + teacher.getEmail(), false), HttpStatus.BAD_REQUEST);
-        }
-
-        Teacher created = new Teacher();
-        created.setEmail(teacher.getEmail());
-        created.setPassword(passwordEncoder.encode(teacher.getPassword()));
-        created.setFirstName(teacher.getFirstName());
-        created.setLastName(teacher.getLastName());
-
-        Set<Role> roles = new HashSet<>();
-        Optional<Role> role = roleRepository.findByName(ERole.ROLE_TEACHER);
-        roles.add(role.get());
-        created.setRoles(roles);
-
-        userRepository.save(created);
-
+    public ResponseEntity<ApiResponse> createTeacher(@RequestBody SignupTeacherRequest request) throws UserException {
+        userService.createTeacher(request);
         return new ResponseEntity<>(new ApiResponse("Signup Success for Teacher.", true), HttpStatus.CREATED);
-
     }
 
     @PostMapping("/signin")
@@ -161,7 +100,7 @@ public class AuthController {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long userId = userDetails.getId();
         refreshTokenService.deleteByUserId(userId);
-        return ResponseEntity.ok(new ApiResponse("Log out successful!", true));
+        return ResponseEntity.ok(new ApiResponse("Sign out successful!", true));
     }
 
 }
