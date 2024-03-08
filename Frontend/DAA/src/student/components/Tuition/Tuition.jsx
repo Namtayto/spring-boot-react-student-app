@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "react-alice-carousel/lib/alice-carousel.css";
 
-import { userInfo } from "../../../Data/userInfo";
-
-import { studentPoint } from "../../../Data/studentPoint";
-
 import StudentInfo from "../StudentInformation/StudentInfo";
 import TuitionItem from "./TuitionItem";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,7 +9,7 @@ import { useParams } from "react-router-dom";
 import { updatePayment } from "../../../State/Payment/Action";
 
 const Tuition = () => {
-  const jwt = localStorage.getItem("jwt");
+  const jwt = localStorage.getItem("accessToken");
   const { auth } = useSelector((store) => store);
   const dispatch = useDispatch();
   useEffect(() => {

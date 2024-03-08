@@ -9,7 +9,7 @@ import { Pagination, TextField } from "@mui/material";
 import FileUpload from "./FileUpload";
 
 const StudentList = (props) => {
-  const jwt = localStorage.getItem("jwt");
+  const jwt = localStorage.getItem("accessToken");
   const { auth } = useSelector((store) => store);
   const dispatch = useDispatch();
 

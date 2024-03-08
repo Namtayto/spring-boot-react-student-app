@@ -22,7 +22,7 @@ export default function Navigation() {
   const [openAuthModal, setOpenAuthModal] = useState(false);
   const [anchorE1, setAnchorE1] = useState(null);
   const openUserMenu = Boolean(anchorE1);
-  const jwt = localStorage.getItem("jwt");
+  const jwt = localStorage.getItem("accessToken");
   const { auth } = useSelector((store) => store);
   const dispatch = useDispatch();
 
@@ -147,7 +147,7 @@ export default function Navigation() {
 
             <div className="ml-auto flex items-center">
               <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                {auth.user?.role === "student" ? (
+                {auth.user?.roles[0].name === "ROLE_STUDENT" ? (
                   <div>
                     <Avatar
                       className="text-white"
@@ -186,7 +186,7 @@ export default function Navigation() {
                       <MenuItem onClick={handleLogout}>Logout</MenuItem>
                     </Menu>
                   </div>
-                ) : auth.user?.role === "teacher" ? (
+                ) : auth.user?.roles[0].name === "ROLE_TEACHER" ? (
                   <div className="flex items-center">
                     <Avatar
                       className="text-white"

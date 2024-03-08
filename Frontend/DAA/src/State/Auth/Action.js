@@ -13,8 +13,6 @@ import {
   REGISTER_SUCCESS,
 } from "./ActionType";
 
-const token = localStorage.getItem("jwt");
-
 const registerRequest = () => ({ type: REGISTER_REQUEST });
 const registerSuccess = (user) => ({ type: REGISTER_SUCCESS, payload: user });
 const registerFailure = (error) => ({ type: REGISTER_FAILURE, payload: error });
