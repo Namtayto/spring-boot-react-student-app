@@ -9,7 +9,7 @@ import com.nam.payload.response.ApiResponse;
 import com.nam.service.StudentPointService;
 import com.nam.service.StudentService;
 import com.nam.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,17 +21,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/student")
+@RequiredArgsConstructor
 public class StudentController {
+
     private final StudentService studentService;
     private final StudentPointService studentPointService;
     private final UserService userService;
-
-    @Autowired
-    public StudentController(StudentService studentService, StudentPointService studentPointService, UserService userService) {
-        this.studentService = studentService;
-        this.studentPointService = studentPointService;
-        this.userService = userService;
-    }
 
     @PostMapping("/subject/{studentId}/{semester}")
     public ResponseEntity<StudentPoint> addSubject(@RequestBody StudentPoint studentPoint, @PathVariable String studentId, @PathVariable String semester) {

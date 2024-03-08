@@ -4,19 +4,15 @@ import com.nam.model.StudentPoint;
 import com.nam.model.Subject;
 import com.nam.repository.StudentPointRepository;
 import com.nam.repository.StudentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class StudentPointServiceImpl implements StudentPointService {
+
     private final StudentPointRepository studentPointRepository;
     private final StudentRepository studentRepository;
-
-    @Autowired
-    public StudentPointServiceImpl(StudentPointRepository studentPointRepository, StudentRepository studentRepository) {
-        this.studentPointRepository = studentPointRepository;
-        this.studentRepository = studentRepository;
-    }
 
     @Override
     public StudentPoint createStudentPoint(StudentPoint studentPoint, String studentId, String semester) {

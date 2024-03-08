@@ -2,22 +2,17 @@ package com.nam.service;
 
 import com.nam.model.Email;
 import com.nam.repository.EmailRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender javaMailSender;
     private final EmailRepository emailRepository;
-
-    @Autowired
-    public EmailServiceImpl(JavaMailSender javaMailSender, EmailRepository emailRepository) {
-        this.javaMailSender = javaMailSender;
-        this.emailRepository = emailRepository;
-    }
 
     public static String cleanEmail(String email) {
         // Loại bỏ các ký tự không hợp lệ từ địa chỉ email

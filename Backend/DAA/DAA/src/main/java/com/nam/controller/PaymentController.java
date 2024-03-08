@@ -10,8 +10,8 @@ import com.razorpay.Payment;
 import com.razorpay.PaymentLink;
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
+import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +22,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class PaymentController {
     @Value("${razorpay.api.key}")
     String apiKey;
@@ -29,14 +30,9 @@ public class PaymentController {
     @Value("${razorpay.api.secret}")
     String apiSecret;
 
-    private UserService userService;
-    private TuitionRepository tuitionRepository;
+    private final UserService userService;
+    private final TuitionRepository tuitionRepository;
 
-    @Autowired
-    public PaymentController(UserService userService, TuitionRepository tuitionRepository) {
-        this.tuitionRepository = tuitionRepository;
-        this.userService = userService;
-    }
 
     @PostMapping("/payments/{tuitionId}")
     public ResponseEntity<PaymentLinkResponse> createPaymentLink(@PathVariable Long tuitionId,

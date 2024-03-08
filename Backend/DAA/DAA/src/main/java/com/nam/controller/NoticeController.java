@@ -2,6 +2,7 @@ package com.nam.controller;
 
 import com.nam.model.Notice;
 import com.nam.repository.NoticeRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,12 +12,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/notice")
+@RequiredArgsConstructor
 public class NoticeController {
-    private final NoticeRepository noticeRepository;
 
-    public NoticeController(NoticeRepository noticeRepository) {
-        this.noticeRepository = noticeRepository;
-    }
+    private final NoticeRepository noticeRepository;
 
     @PostMapping("/create")
     public ResponseEntity<Notice> createNotice(@RequestBody Notice notice) {

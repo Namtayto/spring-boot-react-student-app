@@ -15,7 +15,7 @@ import com.nam.security.services.RefreshTokenService;
 import com.nam.security.services.UserDetailsImpl;
 import com.nam.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,21 +32,13 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthController {
+
     private final JwtProvider jwtProvider;
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
     private final RefreshTokenService refreshTokenService;
-
-    @Autowired
-    public AuthController(JwtProvider jwtProvider, UserService userService,
-                          AuthenticationManager authenticationManager, RefreshTokenService refreshTokenService) {
-
-        this.jwtProvider = jwtProvider;
-        this.userService = userService;
-        this.authenticationManager = authenticationManager;
-        this.refreshTokenService = refreshTokenService;
-    }
 
     @PostMapping("/signup/student")
     public ResponseEntity<ApiResponse> createStudent(@RequestBody SignupStudentRequest request) throws UserException {

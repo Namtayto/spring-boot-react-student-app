@@ -2,21 +2,17 @@ package com.nam.controller;
 
 import com.nam.model.Email;
 import com.nam.service.EmailService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/email")
+@RequiredArgsConstructor
 public class EmailController {
 
     private final EmailService emailService;
-
-    @Autowired
-    public EmailController(EmailService emailService) {
-        this.emailService = emailService;
-    }
 
     @RequestMapping("/send")
     public String processEmail(@RequestBody Email email) {
