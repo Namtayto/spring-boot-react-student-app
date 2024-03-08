@@ -45,7 +45,7 @@ const LoginForm = () => {
           </Grid>
           <Grid item xs={12}>
             <Button
-              className="bg-[#9155FD] w-full"
+              className="bg-gradient-to-r from-orange-300 to-red-600 hover:from-pink-500 hover:to-orange-500 w-full"
               type="submit"
               variant="contained"
               size="large"

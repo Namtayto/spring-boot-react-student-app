@@ -31,8 +31,18 @@ const NoticeItem = ({ notice }) => {
             </th>
           </tr>
           {isBoxOpen && (
-            // <div className="flex justify-center items-center h-screen">
-            <div className="text-white">{notice.description}</div>
+            <div className="text-white">
+              {notice.description}
+              {notice.imageURL !== null && (
+                <div className="h-[10rem] w-[20rem]">
+                  <img
+                    className="h-full w-full object-cover "
+                    src={notice.imageURL}
+                    alt=""
+                  />
+                </div>
+              )}
+            </div>
           )}
         </tbody>
       </table>

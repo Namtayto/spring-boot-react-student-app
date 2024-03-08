@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "react-alice-carousel/lib/alice-carousel.css";
+
+import { userInfo } from "../../../Data/userInfo";
+
+import { studentPoint } from "../../../Data/studentPoint";
+
 import StudentInfo from "../StudentInformation/StudentInfo";
 import TuitionItem from "./TuitionItem";
 import { useDispatch, useSelector } from "react-redux";
