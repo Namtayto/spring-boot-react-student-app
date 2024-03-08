@@ -7,7 +7,10 @@ import Footer from "../student/components/Footer/Footer";
 
 import StudentTable from "../student/components/StudentInformation/StudentTable";
 import Tuition from "../student/components/Tuition/Tuition";
-import PaymentSuccess from "../student/components/Payment/PaymentSuccess";
+
+import TeacherPage from "../student/Teacher/components/TeacherPage";
+import AddStudent from "../student/Teacher/components/AddStudent";
+import AddPoint from "../student/Teacher/components/AddPoint";
 
 const StudentRouters = () => {
   return (
@@ -22,6 +25,9 @@ const StudentRouters = () => {
         <Route path="/account/point" element={<StudentTable />}></Route>
         <Route path="/account/tuition" element={<Tuition />}></Route>
         <Route path="/payment/:tuitionId" element={<Tuition />}></Route>
+        <Route path="/teacher" element={<TeacherPage />}></Route>
+        <Route path="/add" element={<AddStudent />}></Route>
+        <Route path="/user/point/add/:studentId" element={<AddPoint />}></Route>
       </Routes>
 
       <div>

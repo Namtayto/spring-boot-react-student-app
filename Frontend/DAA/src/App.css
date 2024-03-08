@@ -36,3 +36,25 @@
     transform: rotate(360deg);
   }
 }
+
+body {
+  background-color: black;
+}
+
+/* Gradient Scroll Bar */
+
+/* width */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 100vh;
+  background: #1f2937;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(rgb(263,72,153), rgb(239, 68, 68), rgb(239, 68, 68));
+}
