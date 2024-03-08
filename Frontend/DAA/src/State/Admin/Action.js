@@ -55,20 +55,20 @@ export const FetchUserList = (reqdata) => {
   const { pageNumber, pageSize } = reqdata;
   return (dispatch) => {
     dispatch(makeRequest());
-    setTimeout(() => {
-      axios
-        .get(
-          `${API_BASE_URL}/student/getStudentList?pageNumber=${pageNumber}&pageSize=${pageSize}`
-        )
-        .then((res) => {
-          const userlist = res.data;
-          console.log(userlist);
-          dispatch(geUserList(userlist));
-        })
-        .catch((err) => {
-          dispatch(failRequest(err.message));
-        });
-    }, 200);
+    // setTimeout(() => {
+    axios
+      .get(
+        `${API_BASE_URL}/student/getStudentList?pageNumber=${pageNumber}&pageSize=${pageSize}`
+      )
+      .then((res) => {
+        const userlist = res.data;
+        console.log(userlist);
+        dispatch(geUserList(userlist));
+      })
+      .catch((err) => {
+        dispatch(failRequest(err.message));
+      });
+    // }, 200);
   };
 };
 
@@ -122,3 +122,20 @@ export const FunctionAddPoint = (data, id, semester) => {
     // }, 2000);
   };
 };
+
+// export const FunctionUpdateUser = (data, code) => {
+//   return (dispatch) => {
+//     dispatch(makeRequest());
+//     //setTimeout(() => {
+//     axios
+//       .put("http://localhost:8000/user/" + code, data)
+//       .then((res) => {
+//         dispatch(updateUser());
+//         toast.success("User Updated successfully.");
+//       })
+//       .catch((err) => {
+//         dispatch(failRequest(err.message));
+//       });
+//     // }, 2000);
+//   };
+// };
