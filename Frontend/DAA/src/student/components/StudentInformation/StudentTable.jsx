@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../../State/Auth/Action";
 
 const StudentTable = () => {
-  const jwt = localStorage.getItem("jwt");
+  const jwt = localStorage.getItem("accessToken");
   const { auth } = useSelector((store) => store);
   const dispatch = useDispatch();
   useEffect(() => {

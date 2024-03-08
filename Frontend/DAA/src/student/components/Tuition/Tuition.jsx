@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "react-alice-carousel/lib/alice-carousel.css";
-
 import StudentInfo from "../StudentInformation/StudentInfo";
 import TuitionItem from "./TuitionItem";
 import { useDispatch, useSelector } from "react-redux";
