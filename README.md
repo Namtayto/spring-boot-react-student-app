@@ -16,12 +16,11 @@ Password: teacher <br>
 
 ## Used Technologies:
 
-* Back-end: Spring (Boot, Data, Security), JPA / Hibernate, PostgreSQL, Razorpay
-* Front-end: React.js, Redux, React Router DOM, Tailwind CSS
-* Security: JWT, Refresh Token
-* Testing: JUnit5, AssertJ, Mockito. (given/when/then format - BDD style)
-* REST API
-* Deploy: Vercel, Render, Docker
+* **Back-end:** Spring (Boot, Data, Security), JPA / Hibernate, PostgreSQL, Razorpay
+* **Front-end:** React.js, Redux, React Router DOM, Tailwind CSS
+* **Security:** JWT, Refresh Token
+* **Testing:** JUnit5, AssertJ, Mockito. (given/when/then format - BDD style)
+* **Deploy:** Vercel, Render, Docker
 
 ## Features
 
