@@ -1,8 +1,8 @@
 export const navigation = {
   categories: [
     {
-      id: "gioithieu",
-      name: "Giới thiệu ",
+      id: "Giới Thiệu",
+      name: "Giới Thiệu",
       items: [
         {
           name: "Cổng thông tin đào tạo",
