@@ -64,7 +64,7 @@ const StudentList = (props) => {
       [studentPoints]: true,
     }));
   };
-  if (auth.user?.role !== "teacher") {
+  if (auth.user?.roles[0].name !== "ROLE_TEACHER") {
     return (
       <div className="flex justify-center items-center">
         <h2 className="text-white text-lg">
